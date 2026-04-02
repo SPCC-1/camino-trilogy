@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Never Build Alone · Door I · Tr(us)t</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f5f0e8;
+      --warm-white: #faf7f2;
+      --ink: #2a2520;
+      --ink-light: #5a5248;
+      --ink-faint: #9a9088;
+      --gold: #b8962e;
+      --gold-light: #d4af5a;
+      --rule: #d8d0c4;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      background-color: var(--warm-white);
+      color: var(--ink);
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 17px;
+      line-height: 1.8;
+    }
+
+    body {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 80px 40px 120px;
+    }
+
+    /* Nav */
+    .nav {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 64px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    .nav span { color: var(--gold); }
+
+    /* Header */
+    .path-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 3.6rem;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+
+    .tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--ink-light);
+      margin-bottom: 40px;
+    }
+
+    .book-meta {
+      display: flex;
+      gap: 32px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .meta-item strong {
+      display: block;
+      color: var(--ink-light);
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    hr.rule {
+      border: none;
+      border-top: 1px solid var(--rule);
+      margin: 48px 0;
+    }
+
+    hr.rule-light {
+      border: none;
+      border-top: 1px solid var(--rule);
+      opacity: 0.4;
+      margin: 0;
+    }
+
+    /* Intro */
+    .intro {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.2rem;
+      line-height: 1.75;
+      color: var(--ink-light);
+      padding-left: 24px;
+      border-left: 2px solid var(--gold-light);
+      margin-bottom: 48px;
+    }
+
+    /* Fibonacci nav */
+    .fibonacci-nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+      align-items: center;
+    }
+
+    .fib-item {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      padding: 4px 10px;
+      border: 1px solid var(--rule);
+    }
+
+    .fib-item.active {
+      color: var(--gold);
+      border-color: var(--gold-light);
+    }
+
+    .fib-arrow {
+      color: var(--ink-faint);
+      font-size: 0.8rem;
+    }
+
+    /* Act headers */
+    .act-header {
+      margin: 40px 0 8px;
+    }
+
+    .act-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+
+    .act-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 1.6rem;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+    }
+
+    .act-summary {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--ink-faint);
+      margin-top: 4px;
+      margin-bottom: 16px;
+    }
+
+    /* Chapter accordion */
+    .chapter-block {
+      border-top: 1px solid var(--rule);
+    }
+
+    .chapter-block:last-of-type {
+      border-bottom: 1px solid var(--rule);
+    }
+
+    /* The clickable chapter row */
+    .chapter-toggle {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 0;
+      cursor: pointer;
+      user-select: none;
+      list-style: none;
+      width: 100%;
+      background: none;
+      border: none;
+      text-align: left;
+    }
+
+    .chapter-toggle::-webkit-details-marker { display: none; }
+
+    .chapter-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      min-width: 40px;
+      flex-shrink: 0;
+    }
+
+    .chapter-title-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 500;
+      font-size: 1.15rem;
+      color: var(--ink);
+      letter-spacing: 0.01em;
+      flex: 1;
+    }
+
+    .chapter-title-link {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 500;
+      font-size: 1.15rem;
+      color: var(--gold);
+      letter-spacing: 0.01em;
+      flex: 1;
+      text-decoration: none;
+    }
+
+    .chapter-title-link:hover {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .chapter-tag {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .chapter-count {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      flex-shrink: 0;
+    }
+
+    .chapter-arrow {
+      font-size: 0.75rem;
+      color: var(--ink-faint);
+      flex-shrink: 0;
+      transition: transform 0.25s ease;
+      margin-left: 4px;
+    }
+
+    details[open] .chapter-arrow {
+      transform: rotate(90deg);
+    }
+
+    /* Scene list — hidden by default */
+    .scene-list {
+      padding: 0 0 16px 56px;
+    }
+
+    .scene-item {
+      display: flex;
+      gap: 16px;
+      align-items: baseline;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(216, 208, 196, 0.3);
+    }
+
+    .scene-item:last-child { border-bottom: none; }
+
+    .scene-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      min-width: 32px;
+      flex-shrink: 0;
+    }
+
+    .scene-content { flex: 1; }
+
+    .scene-title-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem;
+      color: var(--ink-light);
+      font-weight: 500;
+    }
+
+    .scene-desc {
+      font-family: 'EB Garamond', serif;
+      font-size: 0.88rem;
+      color: var(--ink-faint);
+      font-style: italic;
+      line-height: 1.6;
+      margin-top: 2px;
+    }
+
+    /* Hinge marker */
+    .hinge-marker {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold-light);
+      padding: 2px 8px;
+      flex-shrink: 0;
+    }
+
+    /* Scene count footer */
+    .scene-count-footer {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      text-align: center;
+      padding: 32px 0 16px;
+      border-top: 1px solid var(--rule);
+      margin-top: 48px;
+      line-height: 2;
+    }
+
+    .scene-count-footer em {
+      color: var(--gold);
+      font-style: normal;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 80px;
+      padding-top: 32px;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-mark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.05em;
+      color: var(--ink-faint);
+    }
+
+    .footer-mark em { font-style: italic; color: var(--gold); }
+
+    .footer-meta {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      text-align: right;
+      line-height: 1.8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="nav">
+    Tr(us)t <span>·</span> Path I <span>·</span> The Story
+  </div>
+
+  <div class="path-label">Path I · The Story · Door I</div>
+  <h1>Never Build Alone</h1>
+  <div class="tagline">A Story of Fathers, Sons, and the American Dream · Alfredo Mathew III</div>
+
+  <div class="book-meta">
+    <div class="meta-item"><strong>Scenes</strong>89</div>
+    <div class="meta-item"><strong>Structure</strong>P + 15 + E</div>
+    <div class="meta-item"><strong>Arc</strong>Inheritance · Exile · Return</div>
+    <div class="meta-item"><strong>Fibonacci</strong>89</div>
+    <div class="meta-item"><strong>Est. Length</strong>60,000 words</div>
+  </div>
+
+  <hr class="rule">
+
+  <div class="intro">
+    The book is what people can see and understand. It is a human story about fathers and sons and the American Dream. Underneath the human story is the architecture — the glacier of sovereignty and economic democracy. The book is the tip of the iceberg. The Trust is the 90% that is currently invisible.
+  </div>
+
+  <div class="fibonacci-nav">
+    <div class="fib-item active">55 · Door III</div>
+    <div class="fib-arrow">+</div>
+    <div class="fib-item active">89 · Door I</div>
+    <div class="fib-arrow">+</div>
+    <div class="fib-item">144 · Door II</div>
+    <div class="fib-arrow">→</div>
+    <div class="fib-item">233 · Trust Constitution</div>
+    <div class="fib-arrow">→</div>
+    <div class="fib-item">377 · Patent</div>
+    <div class="fib-arrow">→</div>
+    <div class="fib-item">610 · The Ledger</div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- PROLOGUE -->
+  <!-- ═══════════════════════════════════════ -->
+
+  <div class="act-header">
+    <div class="act-label">Prologue</div>
+    <div class="act-title">The Hemorrhage</div>
+    <div class="act-summary">5 scenes · The question that opens the book</div>
+  </div>
+
+  <details class="chapter-block">
+    <summary class="chapter-toggle">
+      <span class="chapter-num">P</span>
+      <span class="chapter-title-text">The Hemorrhage</span>
+      <span class="chapter-count">5 Scenes</span>
+      <span class="chapter-arrow">▶</span>
+    </summary>
+    <div class="scene-list">
+      <div class="scene-item">
+        <div class="scene-num">P.1</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The last normal day</div>
+          <div class="scene-desc">Manhattan, April 18, 2022. He is 48, in a hotel room for meetings. He does not know this is the last time anything feels ordinary.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">P.2</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The body calls it in</div>
+          <div class="scene-desc">By midnight he cannot stand without the room moving. Hours on the bathroom floor. The body is doing something without his permission.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">P.3</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The diagnosis</div>
+          <div class="scene-desc">The CT scan at White Plains Hospital. The technician's face changes. Subarachnoid hemorrhage. They transfer him to Montefiore in the Bronx — his father's borough.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">P.4</div>
+        <div class="scene-content">
+          <div class="scene-title-text">Before the angiogram</div>
+          <div class="scene-desc">Rita arrives at midnight and signs the documents releasing the hospital from liability. Before he goes under anesthesia, without any prior practice of faith, he submits to God. Something breaks open.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">P.5</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The question on the ceiling</div>
+          <div class="scene-desc">He comes back. No aneurysm. He stares at the hospital ceiling and asks the question he will spend two years answering: what happens to everything I've been building if I disappear?</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <hr class="rule">
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- ACT I -->
+  <!-- ═══════════════════════════════════════ -->
+
+  <div class="act-header">
+    <div class="act-label">Act I · Inheritance</div>
+    <div class="act-title">What was given · Chapters 1–5 · 28 scenes</div>
+    <div class="act-summary">A grandfather arrives. A father builds and breaks. A son inherits without instruction.</div>
+  </div>
+
+  <details class="chapter-block">
+    <summary class="chapter-toggle">
+      <span class="chapter-num">Ch 1</span>
+      <span class="chapter-title-text">My White Skin and My Puerto Rican Heart</span>
+      <span class="chapter-count">5 Scenes</span>
+      <span class="chapter-arrow">▶</span>
+    </summary>
+    <div class="scene-list">
+      <div class="scene-item">
+        <div class="scene-num">1.1</div>
+        <div class="scene-content">
+          <div class="scene-title-text">Manhattan, November 9, 1973</div>
+          <div class="scene-desc">The oldest son of the oldest son of the oldest son. No one has to tell him what that means. He figures it out early.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">1.2</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The two worlds in one body</div>
+          <div class="scene-desc">He comes out looking white in a Puerto Rican family. Two languages in the house. Two sets of grandparents from opposite ends of American history. He is a living translation between worlds that do not know they need translation.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">1.3</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The house full of books</div>
+          <div class="scene-desc">His father's shelves: Baldwin, Russell, Colón, Spengler. He reads them all — not because anyone told him to, but because books are the closest he can get to his father when his father is working late.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">1.4</div>
+        <div class="scene-content">
+          <div class="scene-title-text">What his white skin opened</div>
+          <div class="scene-desc">He could walk into rooms his father couldn't enter — not because he was more qualified, but because of his face. He understood this before he had words for it. The guilt came later. So did the strategy.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">1.5</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The riddle</div>
+          <div class="scene-desc">He looks like the oppressor and carries the oppressed. He speaks the language of power and uses it against power's interests. He builds with the tools of the system he is trying to dismantle. He is the contradiction he is trying to resolve.</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="chapter-block">
+    <summary class="chapter-toggle">
+      <span class="chapter-num">Ch 2</span>
+      <span class="chapter-title-text">Nobody Pisses on Me — The Father: Trailblazer</span>
+      <span class="chapter-count">6 Scenes</span>
+      <span class="chapter-arrow">▶</span>
+    </summary>
+    <div class="scene-list">
+      <div class="scene-item">
+        <div class="scene-num">2.1</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The closet</div>
+          <div class="scene-desc">Alfredo Mathew Jr. studies in a closet because it is the only quiet place. Eight children. He signs his first paycheck over to his mother. He becomes the first in the family to go to college.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">2.2</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The trailblazer</div>
+          <div class="scene-desc">First Puerto Rican principal of a secondary school in New York City. First Puerto Rican Community Superintendent. He writes a Christmas message to his staff calling educational failure "genocide." He signs it "Feliz año nuevo."</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">2.3</div>
+        <div class="scene-content">
+          <div class="scene-title-text">Attica</div>
+          <div class="scene-desc">When Attica erupts, the inmates demand observers and call his name alongside Kunstler and Huey P. Newton. He goes — because he has former students inside. They warn him to leave before the state moves in. He gets out just in time.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">2.4</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The move for Chancellor</div>
+          <div class="scene-desc">1977–78. He believes he has the votes for Chancellor of the NYC school system. He loses at the last moment. He does not fully understand why. He takes a federal job in Maryland. It is exile. His son does not know this yet.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">2.5</div>
+        <div class="scene-content">
+          <div class="scene-title-text">Power without structure</div>
+          <div class="scene-desc">"Nobody Pisses on Me." A man who would not be diminished by anyone but never built a container to hold what he was building. Fearlessness without architecture. The vessel breaks.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">2.6</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The unfinished manuscript</div>
+          <div class="scene-desc">Typewritten pages: "El Bronx," "College Days," at least three more chapters. His son will read them aloud into a recorder decades later. Speaking a dead man's words is grief and reckoning simultaneously.</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="chapter-block">
+    <summary class="chapter-toggle">
+      <span class="chapter-num">Ch 3</span>
+      <span class="chapter-title-text">Community Power and the Counter-Revolution</span>
+      <span class="chapter-count">5 Scenes</span>
+      <span class="chapter-arrow">▶</span>
+    </summary>
+    <div class="scene-list">
+      <div class="scene-item">
+        <div class="scene-num">3.1</div>
+        <div class="scene-content">
+          <div class="scene-title-text">Ocean Hill-Brownsville</div>
+          <div class="scene-desc">1968. The community control experiment. The UFT strikes. The battle gets racialized. The real opponents — the central bureaucracy — remain invisible in the narrative. His father is in the middle of all of it.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">3.2</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The structural lesson</div>
+          <div class="scene-desc">When you fight for power redistribution, the people who benefit from the existing arrangement find a way to make the fight about something other than power. Race. Values. Process. Anything but power.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">3.3</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The Powell Memo, 1971</div>
+          <div class="scene-desc">Lewis Powell writes a blueprint for corporate America to rebuild its power through think tanks, courts, and legislatures. His son reads this memo in 2022 and thinks: they built the structure. The other side never did.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">3.4</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The counter-revolution wins</div>
+          <div class="scene-desc">The community control movement loses. Not to bad arguments — to organized structural power. His father watches it happen and does not surrender. But something calcifies.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">3.5</div>
+        <div class="scene-content">
+          <div class="scene-title-text">Three generations, one fight</div>
+          <div class="scene-desc">His grandfather fought for labor unions in the 1930s. His father for community control in the 1960s. His son will build a constitutional architecture for intellectual property in the 2020s. The tools change. The structural challenge is identical.</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="chapter-block">
+    <summary class="chapter-toggle">
+      <span class="chapter-num">Ch 4</span>
+      <span class="chapter-title-text">Coming of Age in a Broken America</span>
+      <span class="chapter-count">5 Scenes</span>
+      <span class="chapter-arrow">▶</span>
+    </summary>
+    <div class="scene-list">
+      <div class="scene-item">
+        <div class="scene-num">4.1</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The two cities in one borough</div>
+          <div class="scene-desc">The South Bronx of his adolescence: crack epidemic, AIDS, Wall Street rising, buildings burning for insurance. Two economies from the same body. He knows which side of the glass he stands on. He can also move through both.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">4.2</div>
+        <div class="scene-content">
+          <div class="scene-title-text">Silver Spring — the best years</div>
+          <div class="scene-desc">His father takes a federal job in Maryland. For his son: the best family years. For his father: exile. He does not understand this distinction until much later. The same years read completely differently from opposite chairs.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">4.3</div>
+        <div class="scene-content">
+          <div class="scene-title-text">Lafayette College</div>
+          <div class="scene-desc">Selective, predominantly white, financial aid. First in his family to attend a school like this. Lafayette teaches him how power reproduces itself through networking. He takes this education and uses it against its own intentions.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">4.4</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The Ayn Rand problem</div>
+          <div class="scene-desc">He is reading The Fountainhead when his father dies. He is 19, at the apex of his self-involvement. His father's death ends this phase. Everything that follows is the correction.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">4.5</div>
+        <div class="scene-content">
+          <div class="scene-title-text">Meeting Rita</div>
+          <div class="scene-desc">She is smarter than him in the ways that matter most. She sees him clearly — the whole thing, not just the parts he shows. He does not fully understand what this means until 2022, when she signs the hospital paperwork.</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="chapter-block">
+    <summary class="chapter-toggle">
+      <span class="chapter-num">Ch 5</span>
+      <a href="chapter-05-never-die-alone-v2.html" class="chapter-title-link" onclick="event.stopPropagation()">Never Die Alone — The Death of the Father</a>
+      <span class="chapter-tag">★ Sample</span>
+      <span class="chapter-count">6 Scenes</span>
+      <span class="chapter-arrow">▶</span>
+    </summary>
+    <div class="scene-list">
+      <div class="scene-item">
+        <div class="scene-num">5.1</div>
+        <div class="scene-content">
+          <div class="scene-title-text">Lafayette — The Absence</div>
+          <div class="scene-desc">He drives two and a half hours to a football game. His son leaves a note on the dorm room door. The second visit: a sandwich shop in Easton. His father says quietly — there are no answers to the questions you're asking.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">5.2</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The Cruise — New Year's Eve</div>
+          <div class="scene-desc">Reading The Fountainhead at the height of selfishness. At midnight, from the upper deck, he looks down and sees his parents kiss. January 1st, 1993. He doesn't know it is the last time he will see them together.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">5.3</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The Door — 323 Ashford Avenue</div>
+          <div class="scene-desc">In the basement, the furnace room, his sanctuary. A knock on the door. Dark. Two police officers. They ask for his mom. He was reading The Fountainhead when they knocked. He closes the book.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">5.4</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The Funeral — The Front Row</div>
+          <div class="scene-desc">Mayor Dinkins. Herman Badillo. Uncle Manny. He stands at the front, shakes hands, says nothing, does not cry. Goes back to college three days later. His father's journal called him Matt — the one on a lark. The eulogy has been building for thirty years. This book is it.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">5.5</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The Dreams — The Car on the Hill</div>
+          <div class="scene-desc">His father present but unable to speak. A car going downhill — siblings at the wheel, none of them able to drive, none of them able to stop it. Every member of the family dealt with the pain alone, following his father's example.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">5.6</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The Wound — The Inheritance</div>
+          <div class="scene-desc">He embraces his anger as his identity. He promises to finish what his father started. To know him by becoming him. Emotionally unavailable, intellectually alive, at war with his country — and his own heart. Trying to become visible to a man who didn't fully see him.</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <hr class="rule">
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- ACT II -->
+  <!-- ═══════════════════════════════════════ -->
+
+  <div class="act-header">
+    <div class="act-label">Act II · Exile</div>
+    <div class="act-title">What it cost · Chapters 6–10 · 29 scenes</div>
+    <div class="act-summary">Three decades trying to redeem the inheritance. The widening gap between wages and ownership. The breaking point.</div>
+  </div>
+
+  <details class="chapter-block">
+    <summary class="chapter-toggle">
+      <span class="chapter-num">Ch 6</span>
+      <span class="chapter-title-text">The South Bronx Classroom</span>
+      <span class="chapter-count">5 Scenes</span>
+      <span class="chapter-arrow">▶</span>
+    </summary>
+    <div class="scene-list">
+      <div class="scene-item">
+        <div class="scene-num">6.1</div>
+        <div class="scene-content">
+          <div class="scene-title-text">Why he taught</div>
+          <div class="scene-desc">1995. He cannot think of work that more directly connects what you do to what happens in a human life. He wants to see the connection. He needs proof that transformation is possible.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">6.2</div>
+        <div class="scene-content">
+          <div class="scene-title-text">What good teaching is</div>
+          <div class="scene-desc">Find what the student can do and build from there. He writes his students' names in a journal, keeps track of what happens to them. He is building a ledger before he knows the word.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">6.3</div>
+        <div class="scene-content">
+          <div class="scene-title-text">His father's shadow in the corridors</div>
+          <div class="scene-desc">Some of the older teachers knew Alfredo Jr. They tell stories. He listens. He is piecing together a man he never fully knew through the testimony of people who watched him work.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">6.4</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The limit of the classroom</div>
+          <div class="scene-desc">Policy without structural change is rearranging furniture. The classroom is necessary and insufficient. He begins to look for the structure underneath it.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">6.5</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The first articulation</div>
+          <div class="scene-desc">He hears the term "social capital" in a seminar. He has been building it his entire life. He now has a name for it. The name does not yet help him scale it or hold it.</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="chapter-block">
+    <summary class="chapter-toggle">
+      <span class="chapter-num">Ch 7</span>
+      <span class="chapter-title-text">California: Freedom and Starting Over</span>
+      <span class="chapter-count">5 Scenes</span>
+      <span class="chapter-arrow">▶</span>
+    </summary>
+    <div class="scene-list">
+      <div class="scene-item">
+        <div class="scene-num">7.1</div>
+        <div class="scene-content">
+          <div class="scene-title-text">Arriving</div>
+          <div class="scene-desc">Late 1990s. The first tech boom is reshaping San Francisco. California is far from everything he has carried. The distance is not escape. It is space to breathe.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">7.2</div>
+        <div class="scene-content">
+          <div class="scene-title-text">San Francisco and Oakland</div>
+          <div class="scene-desc">Fifteen minutes apart and structurally opposed. Capital concentrates in one. The people capital displaces go to the other. The same structural dynamic as the South Bronx and Wall Street — just faster and with better weather.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">7.3</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The structural gap</div>
+          <div class="scene-desc">The gap between the social sector (mission but no capital path) and the private sector (capital path but no mission). Designed. He is going to design something that refuses this separation.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">7.4</div>
+        <div class="scene-content">
+          <div class="scene-title-text">Texas</div>
+          <div class="scene-desc">He and Rita move to Plano. Stability. A different pace. Space to think. He misses the Bay Area. He does not miss the pace. Behind his desk, a shelf that is an altar.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">7.5</div>
+        <div class="scene-content">
+          <div class="scene-title-text">What California gave</div>
+          <div class="scene-desc">Distance, a new network, the technology world, the social enterprise model, the Bay Area organizing tradition. He did not know he was gathering ingredients. He was gathering ingredients.</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="chapter-block">
+    <summary class="chapter-toggle">
+      <span class="chapter-num">Ch 8</span>
+      <span class="chapter-title-text">The Bay Area: Two Strands of American Power</span>
+      <span class="chapter-count">5 Scenes</span>
+      <span class="chapter-arrow">▶</span>
+    </summary>
+    <div class="scene-list">
+      <div class="scene-item">
+        <div class="scene-num">8.1</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The two strands</div>
+          <div class="scene-desc">Silicon Valley: how to scale, capture value, build structures that persist. Oakland: how to survive, build community without institutional support, organize people who have every reason to give up. He is inside both. He belongs fully to neither.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">8.2</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The intellectual synthesis</div>
+          <div class="scene-desc">Hamilton (capital as sovereignty), De Soto (assets need legibility), Kelso (everyone should own capital), Lanier (data is labor). He adds his own: social capital is the most important and least compensated form of contribution. Something is forming.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">8.3</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The hexagon</div>
+          <div class="scene-desc">Paulo Gregory and the Cohado game — hexagonal pieces inspired by Buckminster Fuller. No single center. Multiple connection points. Strength through distributed connection. He starts to think spatially. He is finding the visual language for the architecture.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">8.4</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The platform economy, named</div>
+          <div class="scene-desc">An architecture, not an accident. The platform captures the value created by participants and returns wages — or less. This is the wages-versus-assets problem in its most naked form. He is going to build a different architecture.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">8.5</div>
+        <div class="scene-content">
+          <div class="scene-title-text">When the two strands become one</div>
+          <div class="scene-desc">Technology and social justice woven together produce: a method for making invisible contribution visible, attributed, and compensable. A constitutional governance layer. A vault. A ledger. A well. The Trust. He sees it. He cannot yet build it.</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="chapter-block">
+    <summary class="chapter-toggle">
+      <span class="chapter-num">Ch 9</span>
+      <span class="chapter-title-text">Build Where You Are — ESO Ventures</span>
+      <span class="chapter-count">6 Scenes</span>
+      <span class="chapter-arrow">▶</span>
+    </summary>
+    <div class="scene-list">
+      <div class="scene-item">
+        <div class="scene-num">9.1</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The founding idea</div>
+          <div class="scene-desc">Entrepreneurship training for people excluded from the economy. The Mechanical Turk: prove the concept manually with a $25,000 contract and ten participants before scaling to $22 million.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">9.2</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The conversations they couldn't have</div>
+          <div class="scene-desc">Three founders. Complementary skills, shared mission, conversations they cannot have — about money, power, what each fears. The unspoken conversations are the cracks in the foundation.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">9.3</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The $12 million</div>
+          <div class="scene-desc">Transformative and destabilizing simultaneously. Power without a constitutional container. He will tell Amy Chan later: the Antichrist is not out there. You look in the mirror, it's inside you.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">9.4</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The Night Shifts</div>
+          <div class="scene-desc">Who is doing the highest-leverage work and being paid the least? In every organization, the most important work is done by the most undercompensated people. The Pareto Inversion.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">9.5</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The dispute and the exit</div>
+          <div class="scene-desc">A governance dispute — the result of everything unsaid. He steps back from ESO operations in early 2024. He is losing something he built. He is also, for the first time, free to build what he has been trying to build.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">9.6</div>
+        <div class="scene-content">
+          <div class="scene-title-text">What ESO taught</div>
+          <div class="scene-desc">How to scale a methodology, win government contracts, navigate a governance crisis — all without a constitutional layer. The last lesson was the most expensive and the most important.</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="chapter-block">
+    <summary class="chapter-toggle">
+      <span class="chapter-num">Ch 10</span>
+      <a href="chapter-10-the-breaking-v2.html" class="chapter-title-link" onclick="event.stopPropagation()">The Breaking</a>
+      <span class="hinge-marker">The Hinge</span>
+      <span class="chapter-count">6 Scenes</span>
+      <span class="chapter-arrow">▶</span>
+    </summary>
+    <div class="scene-list">
+      <div class="scene-item">
+        <div class="scene-num">10.1</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The Grave — April 15, 2022</div>
+          <div class="scene-desc">His father's birthday. The family gathers for Candice's 50th. They visit the grave. He is on the phone with Ben and Martha. Marci's son Sulaiman has to come get him. He walks over feeling proud. He thinks his father would be proud.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">10.2</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The Fight — Rita</div>
+          <div class="scene-desc">She doesn't want him to keep traveling, keep pushing. He is about to skip Candice's birthday for work. Rita encourages him to go anyway. He leaves angry and feeling misunderstood.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">10.3</div>
+        <div class="scene-content">
+          <div class="scene-title-text">Nyack — Hector and the Hudson</div>
+          <div class="scene-desc">Walking up the hill with Marci. He spots Hector Guadalupe. Coffee the next morning looking at the Hudson River. He tells Hector he can manifest money. He is so full of himself he is practically levitating.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">10.4</div>
+        <div class="scene-content">
+          <div class="scene-title-text">Tax Day — The Pop</div>
+          <div class="scene-desc">April 18. FaceTime with Rita and his daughter. A pop. Starting at the back of his head. He hands the phone to his mother. His father's training: when you're hurt, get somewhere quiet. Be alone. That's what men do. He checks himself into a hotel room.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">10.5</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The Hotel Room — Rita on the Phone</div>
+          <div class="scene-desc">Don't hang up. Plug it into the wall. I'm staying up with you all night. In the middle of the night she types his symptoms into the internet. She says nothing. She doesn't panic. She holds the night.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">10.6</div>
+        <div class="scene-content">
+          <div class="scene-title-text">Montefiore — The Surrender</div>
+          <div class="scene-desc">Ambulance to Montefiore in the Bronx. His father's borough. His 80-year-old mother follows in her car. Before the angiogram, without thinking, without any prior practice of faith — he submits to God. Everything goes black.</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <hr class="rule">
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- ACT III -->
+  <!-- ═══════════════════════════════════════ -->
+
+  <div class="act-header">
+    <div class="act-label">Act III · Return</div>
+    <div class="act-title">What was built · Chapters 11–15 · 29 scenes</div>
+    <div class="act-summary">After the breaking: surrender, resurrection, and a new architecture for prosperity rooted in covenant and shared ownership.</div>
+  </div>
+
+  <details class="chapter-block">
+    <summary class="chapter-toggle">
+      <span class="chapter-num">Ch 11</span>
+      <a href="chapter-11-surrender.html" class="chapter-title-link" onclick="event.stopPropagation()">Surrender</a>
+      <span class="chapter-count">5 Scenes</span>
+      <span class="chapter-arrow">▶</span>
+    </summary>
+    <div class="scene-list">
+      <div class="scene-item">
+        <div class="scene-num">11.1</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The Return — April 20–22</div>
+          <div class="scene-desc">No aneurysm. Rita holds his hand. Walking for the first time. Excruciating. The step-down unit: a Spanish-speaking man with a colostomy bag, no interpreter on shift, in the most Latino borough in New York. Five days without sleep.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">11.2</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The Weeping — April 23, Morning</div>
+          <div class="scene-desc">He calls Candice the day after her birthday. Takes a walk with a nurse from St. Lucia. Sits in a chair. For the first time since the hemorrhage — for the first time in years — he weeps. He waits for Marci and Rita.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">11.3</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The Anointing — April 23, Afternoon</div>
+          <div class="scene-desc">Cousin Greg sends Minister Williams from St. Samuel Cathedral, 199th and Valentine Avenue, the Bronx. He arrives with oil. Rita and Marci present. Neither has ever seen him pray. Marci performs Reiki. He falls asleep for the first time in five days.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">11.4</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The Mountaintop — April 23, Night</div>
+          <div class="scene-desc">Surrounded by light. A peace he has never known. His ancestors with him. And specifically — Titi Isabel. His father's younger sister, whose story Titi Lil told just days before the hemorrhage. She holds him. She heals him. In his journal: Isabel Mathew earned her wings. 4/23/2022.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">11.5</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The First Vision — April 25</div>
+          <div class="scene-desc">Seven days after the hemorrhage. He asks for his journal. The hard drive has been erased. In the cleared space he writes: The 50/50 Club. The 10% commitment. Home trust and village trust. The compounding principle. The sentence trails off. The vision is larger than the page.</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="chapter-block">
+    <summary class="chapter-toggle">
+      <span class="chapter-num">Ch 12</span>
+      <span class="chapter-title-text">Outgrowing the Container</span>
+      <span class="chapter-count">5 Scenes</span>
+      <span class="chapter-arrow">▶</span>
+    </summary>
+    <div class="scene-list">
+      <div class="scene-item">
+        <div class="scene-num">12.1</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The container problem</div>
+          <div class="scene-desc">Every institution he has built hits the same wall: the structure that worked when small becomes the constraint when it grows. Not a management problem. A constitutional problem.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">12.2</div>
+        <div class="scene-content">
+          <div class="scene-title-text">Constitution before capital</div>
+          <div class="scene-desc">The Articles of Confederation failed because they had no enforcement mechanism. ESO was the Articles of Confederation. The Trust is the Constitution. His hospital room in 2022 was Philadelphia.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">12.3</div>
+        <div class="scene-content">
+          <div class="scene-title-text">SPCC1, July 15, 2024</div>
+          <div class="scene-desc">The first operating company of the Trust. 80% of all IP gifted to the Trust commons. 10% reinvested. 10% to the originator — because the originator bore the risk of building the constitutional layer first.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">12.4</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The ledger begins</div>
+          <div class="scene-desc">Session 1: February 26, 2026. 70 registered artifacts in 29 days. Not because he is working harder. Because he has the right container.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">12.5</div>
+        <div class="scene-content">
+          <div class="scene-title-text">What outgrowing the container means</div>
+          <div class="scene-desc">The person you are becoming requires a larger structure than the person you were. He outgrew ESO because the architecture he was trying to build required a constitutional layer that ESO could not hold.</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="chapter-block">
+    <summary class="chapter-toggle">
+      <span class="chapter-num">Ch 13</span>
+      <span class="chapter-title-text">Capital in the Community / Shared Prosperity</span>
+      <span class="chapter-count">5 Scenes</span>
+      <span class="chapter-arrow">▶</span>
+    </summary>
+    <div class="scene-list">
+      <div class="scene-item">
+        <div class="scene-num">13.1</div>
+        <div class="scene-content">
+          <div class="scene-title-text">Predistribution, not redistribution</div>
+          <div class="scene-desc">The Trust does not redistribute. The Trust builds a different structure. The distribution formula is set before the IP has any value. Ownership embedded before the money arrives.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">13.2</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The care economy</div>
+          <div class="scene-desc">The largest unrecognized sector of value creation. Home care, elder care, teaching, organizing. Enormous value. Entirely invisible to capital. Predominantly women. Exactly where the Trust's methodology is most needed.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">13.3</div>
+        <div class="scene-content">
+          <div class="scene-title-text">Social capital made legible</div>
+          <div class="scene-desc">His father built social capital in the Bronx for forty years. When he died, it died with him. None of it tracked, attributed, compensable. The Trust makes it legible. A number. A claim. A stake.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">13.4</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The 55 and the American founding</div>
+          <div class="scene-desc">Fifty-five delegates in Philadelphia, 1787. Not elected. Not fully representative. Willing to make a constitutional commitment before the outcome was clear. The Trust's 55 are the same.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">13.5</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The north star metric</div>
+          <div class="scene-desc">The number of frontline care workers who transition from wage-only employment into sustained profit-sharing and equity participation. Not access. Not training. Ownership. The metric is the message.</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="chapter-block">
+    <summary class="chapter-toggle">
+      <span class="chapter-num">Ch 14</span>
+      <span class="chapter-title-text">Puerto Rico: The Return</span>
+      <span class="chapter-count">5 Scenes</span>
+      <span class="chapter-arrow">▶</span>
+    </summary>
+    <div class="scene-list">
+      <div class="scene-item">
+        <div class="scene-num">14.1</div>
+        <div class="scene-content">
+          <div class="scene-title-text">Bayamón, 1925 → 2026</div>
+          <div class="scene-desc">His great-great-grandfather left Bayamón in 1925. He sent for his brothers and sisters. He never went back. His grandson is going back — not to what was, but to build what it should have been allowed to become.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">14.2</div>
+        <div class="scene-content">
+          <div class="scene-title-text">Five hundred years of extraction</div>
+          <div class="scene-desc">Spanish colonialism. American colonialism. The Jones Act. PROMESA. The same structural story his family brought to the Bronx, told at the scale of an island.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">14.3</div>
+        <div class="scene-content">
+          <div class="scene-title-text">Añoranza</div>
+          <div class="scene-desc">He walks through Bayamón and feels something he cannot name in English. The longing for a past he inherited. The grief of a place he has never fully been in and cannot fully leave.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">14.4</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The music is the map</div>
+          <div class="scene-desc">He hears bomba in a plaza. Call and response. No single center. Multiple connection points. Strength through distributed participation. This is the hexagon. The architecture was in the music before he built it in the ledger.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">14.5</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The circle closes</div>
+          <div class="scene-desc">He is in Bayamón, the city his family left one hundred years ago, thinking about the constitutional architecture for community wealth. The circle closes not by returning to the beginning — but by completing what the beginning was reaching for.</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="chapter-block">
+    <summary class="chapter-toggle">
+      <span class="chapter-num">Ch 15</span>
+      <span class="chapter-title-text">Never Build Alone</span>
+      <span class="chapter-tag">Title Chapter</span>
+      <span class="chapter-count">6 Scenes</span>
+      <span class="chapter-arrow">▶</span>
+    </summary>
+    <div class="scene-list">
+      <div class="scene-item">
+        <div class="scene-num">15.1</div>
+        <div class="scene-content">
+          <div class="scene-title-text">What building alone costs</div>
+          <div class="scene-desc">Sleep, health, the relationships closest to you. The capacity to receive help. Building alone costs the work its durability: when the person stops, the work stops. This is the single point of failure. This is the design flaw.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">15.2</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The covenant</div>
+          <div class="scene-desc">The constitution holds when the person breaks. The ledger holds when the person is gone. The vault holds the intellectual history. The well holds the commons. No single point of failure. This is what his father needed. It did not exist. It does now.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">15.3</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The hat</div>
+          <div class="scene-desc">Alfred Solis sends a hat. On the front: TR(US)T. "Us" embedded in "Trust." The parenthetical is the invention. The architecture exists because human beings do not know how to not build alone — because of trust failure. The house mark names the root problem.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">15.4</div>
+        <div class="scene-content">
+          <div class="scene-title-text">His father's ending, rewritten</div>
+          <div class="scene-desc">His father died mid-sentence, alone, in a hotel room. His son almost died mid-project, alone, in a hotel room. His son did not die. And the work will not die with him — because the container exists. The structural ending.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">15.5</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The question for the reader</div>
+          <div class="scene-desc">What have you built that depends too much on you being present? What would happen to your work if you disappeared tomorrow? These are not rhetorical questions. They are the questions the Trust was built to answer.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">15.6</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The invitation</div>
+          <div class="scene-desc">You are not being asked to believe in the Trust. You are being asked to recognize the pattern. If you recognize it — in your own work, your own family, your own inheritance — you are already inside the architecture. Pa'lante.</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <hr class="rule">
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- EPILOGUE -->
+  <!-- ═══════════════════════════════════════ -->
+
+  <div class="act-header">
+    <div class="act-label">Epilogue</div>
+    <div class="act-title">Covenant Economics — The Ledger of the Universe</div>
+    <div class="act-summary">6 scenes · The thread that runs through all three Alfredos</div>
+  </div>
+
+  <details class="chapter-block">
+    <summary class="chapter-toggle">
+      <span class="chapter-num">E</span>
+      <span class="chapter-title-text">Covenant Economics — The Ledger of the Universe</span>
+      <span class="chapter-count">6 Scenes</span>
+      <span class="chapter-arrow">▶</span>
+    </summary>
+    <div class="scene-list">
+      <div class="scene-item">
+        <div class="scene-num">E.1</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The ledger of the universe</div>
+          <div class="scene-desc">Every act is recorded. Every contribution matters. Every derivation chain extends backward to the first person who did the first thing. The Trust is a human attempt to build the structure the universe already operates by.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">E.2</div>
+        <div class="scene-content">
+          <div class="scene-title-text">Three Alfredos, one thread</div>
+          <div class="scene-desc">Alfredo I built a house with his brothers. He did not build alone. Alfredo II built a movement and died before he could build the container. Alfredo III built the container. The thread runs through all three. The thread is the covenant.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">E.3</div>
+        <div class="scene-content">
+          <div class="scene-title-text">What the book was for</div>
+          <div class="scene-desc">For every person who inherited a pattern they didn't choose and is trying to break it. Recognition is not enough. Action is the covenant.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">E.4</div>
+        <div class="scene-content">
+          <div class="scene-title-text">The 55</div>
+          <div class="scene-desc">Somewhere, the 55 founding contributors are being assembled. Some have already given something. All of them gave before they knew what they would receive. That is the covenant. That is how you build without building alone.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">E.5</div>
+        <div class="scene-content">
+          <div class="scene-title-text">What his father would say</div>
+          <div class="scene-desc">He does not know. This is the honest answer. In each version he imagines, his father sees what his son has built and recognizes it as the completion of something he was reaching for. He builds toward it anyway.</div>
+        </div>
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">E.6</div>
+        <div class="scene-content">
+          <div class="scene-title-text">Pa'lante</div>
+          <div class="scene-desc">The path continues. The mountain is still ahead. The stone road curves toward the village. The yellow arrow says Pa'lante. Forward — not because the past is behind us, it is inside us — but because the architecture requires momentum. You cannot build a covenant standing still.</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- Scene count -->
+  <div class="scene-count-footer">
+    P(5) + Ch1–5(27) + Ch6–10(27) + Ch11–15(26) + E(6) = <em>89 scenes total</em><br>
+    The second number in the Fibonacci sequence of Tr(us)t<br>
+    55 (Door III) + 89 (Door I) = 144 (Door II) · The architecture scales the way the Trust scales
+  </div>
+
+  <div class="footer">
+    <div class="footer-mark">Tr(<em>us</em>)t</div>
+    <div class="footer-meta">
+      SPCC1 · Shared Prosperity Trust<br>
+      Never Build Alone · Door I · SPT-2026-0071<br>
+      Confidential · Draft
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Door II — A Declaration of Interdependence · Tr(us)t</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--gold:#B8860B;--ink:#1A1208;--teal:#0F6E56}
+body{font-family:'Montserrat',sans-serif;background:#fff;color:var(--ink)}
+.page{max-width:860px;margin:0 auto;padding:0 0 4rem}
+
+.header{background:#0A2A20;padding:2rem 2.5rem 1.8rem}
+.door-label{font-size:0.55rem;letter-spacing:0.38em;text-transform:uppercase;color:rgba(29,158,117,0.6);margin-bottom:0.6rem}
+.door-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4.5vw,3rem);font-weight:300;color:#E8F5EE;line-height:1.1;margin-bottom:0.3rem}
+.door-sub{font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(29,158,117,0.45)}
+.header-meta{display:flex;gap:2rem;margin-top:1.4rem;flex-wrap:wrap}
+.hm{font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(232,245,238,0.35)}
+.hm span{display:block;font-size:1.05rem;font-weight:300;font-family:'Cormorant Garamond',serif;color:#5DCAA5;letter-spacing:0.05em;margin-top:2px}
+
+.fib-bar{background:rgba(15,110,86,0.05);border-bottom:1px solid rgba(15,110,86,0.1);padding:0.8rem 2.5rem;display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
+.fib-chip{font-size:0.58rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:3px 8px;border-radius:3px}
+.fib-chip.active{background:rgba(15,110,86,0.12);color:var(--teal);border:1px solid rgba(15,110,86,0.25)}
+.fib-chip.dim{color:rgba(15,110,86,0.3);border:1px solid rgba(15,110,86,0.1)}
+.fib-sep{color:rgba(15,110,86,0.2);font-size:0.7rem}
+
+.intro{padding:2.5rem 2.5rem 1.5rem}
+.intro-text{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,1.9vw,1.35rem);font-weight:400;line-height:1.85;color:rgba(26,18,8,0.82)}
+.intro-text em{color:var(--teal);font-style:italic}
+
+/* CLUSTER */
+.cluster{padding:1.2rem 2.5rem 0}
+.cluster-head{padding-bottom:0.7rem;border-bottom:1px solid rgba(15,110,86,0.1);margin-bottom:0.5rem}
+.cl-label{font-size:0.52rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(15,110,86,0.55);margin-bottom:0.3rem}
+.cl-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;color:var(--ink)}
+.cl-desc{font-size:0.75rem;color:rgba(26,18,8,0.5);line-height:1.6;margin-top:0.4rem;font-family:'Cormorant Garamond',serif;font-style:italic}
+
+/* SECTION + SUBSECTIONS */
+.section{margin:0.5rem 0;border:0.5px solid rgba(26,18,8,0.07);border-radius:6px;overflow:hidden;border-left:2px solid rgba(15,110,86,0.3)}
+.sec-header{display:flex;align-items:baseline;gap:10px;padding:0.85rem 1.1rem 0.65rem;cursor:pointer;background:#fff;transition:background 0.18s;user-select:none}
+.sec-header:hover{background:rgba(15,110,86,0.03)}
+.sec-num{font-size:0.55rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgba(15,110,86,0.5);min-width:26px}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:1.02rem;font-weight:400;color:var(--ink);flex:1}
+.sec-count{font-size:0.56rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(26,18,8,0.25)}
+.sec-arrow{font-size:0.6rem;color:rgba(15,110,86,0.3);transition:transform 0.2s;margin-left:4px}
+.section.open .sec-arrow{transform:rotate(90deg)}
+
+.subsections{display:none;padding:0 1rem 0.8rem;border-top:0.5px solid rgba(15,110,86,0.1)}
+.section.open .subsections{display:block}
+.sub{padding:0.55rem 0;border-bottom:0.5px solid rgba(26,18,8,0.04)}
+.sub:last-child{border-bottom:none}
+.sub-row{display:flex;gap:10px;align-items:baseline}
+.sub-id{font-size:0.52rem;font-weight:600;color:rgba(15,110,86,0.4);min-width:40px;letter-spacing:0.05em;margin-top:1px}
+.sub-body .sub-title{font-size:0.8rem;font-weight:500;color:var(--ink);margin-bottom:1px}
+.sub-body .sub-desc{font-size:0.77rem;color:rgba(26,18,8,0.55);line-height:1.52;font-family:'Cormorant Garamond',serif}
+.sub-tag{display:inline-block;font-size:0.5rem;font-weight:600;padding:1px 5px;border-radius:3px;margin-top:3px;letter-spacing:0.08em;text-transform:uppercase}
+.t-open{background:#EAF3DE;color:#27500A}
+.t-sub{background:#E1F5EE;color:#085041}
+.t-gate{background:#FAEEDA;color:#633806}
+
+.gate-wall{margin:1rem 2.5rem;border:0.5px solid rgba(15,110,86,0.2);border-radius:8px;padding:1.2rem 1.5rem;text-align:center;background:rgba(15,110,86,0.03)}
+.gw-t{font-size:0.7rem;font-weight:500;color:var(--teal);margin-bottom:4px;letter-spacing:0.12em;text-transform:uppercase}
+.gw-d{font-size:0.78rem;color:rgba(26,18,8,0.55);line-height:1.6;font-family:'Cormorant Garamond',serif;font-style:italic}
+
+.footer{padding:2rem 2.5rem;border-top:1px solid rgba(15,110,86,0.1);text-align:center;margin-top:2rem}
+.footer-mark{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:rgba(15,110,86,0.3)}
+.footer-mark em{color:rgba(93,202,165,0.5);font-style:italic}
+.footer-meta{font-size:0.5rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(15,110,86,0.2);margin-top:0.4rem}
+
+@media(max-width:600px){
+  .header,.intro,.cluster{padding-left:1.5rem;padding-right:1.5rem}
+  .fib-bar{padding-left:1.5rem}
+  .gate-wall{margin-left:1.5rem;margin-right:1.5rem}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="header">
+  <div class="door-label">Path II · The Thesis</div>
+  <div class="door-title">A Declaration of Interdependence</div>
+  <div class="door-sub">Redefining the American Dream · Ownership, Democracy, and Shared Prosperity · V8.0</div>
+  <div class="header-meta">
+    <div class="hm">Sections<span>144</span></div>
+    <div class="hm">Clusters<span>6</span></div>
+    <div class="hm">Source<span>V7.1 → V8.0</span></div>
+    <div class="hm">Fibonacci<span>144</span></div>
+  </div>
+</div>
+
+<div class="fib-bar">
+  <span class="fib-chip dim">55 · Door III</span>
+  <span class="fib-sep">+</span>
+  <span class="fib-chip dim">89 · Door I</span>
+  <span class="fib-sep">=</span>
+  <span class="fib-chip active">144 · Door II</span>
+  <span class="fib-sep">→</span>
+  <span class="fib-chip dim">233 · Trust Constitution</span>
+  <span class="fib-sep">→</span>
+  <span class="fib-chip dim">377 · Patent</span>
+</div>
+
+<div class="intro">
+  <p class="intro-text">The political-economic argument in full. The intellectual curriculum. The air he breathes. No personal story — that is Door I. No architecture — that is Door III. This is the analysis: the structural case for economic democracy, grounded in the intellectual heritage that shaped the world and shaped him. <em>Not everyone will make it to the end. That is by design.</em></p>
+</div>
+
+<!-- CLUSTER 1: THE FOUNDING PROMISE -->
+<div class="cluster">
+  <div class="cluster-head">
+    <div class="cl-label">Cluster 1 · Sections 1–24</div>
+    <div class="cl-title">The Founding Promise — What the American Dream Was and What It Left Out</div>
+    <div class="cl-desc">Where the American Dream came from. What it got right. What it left out from the start. The founding mythology honored — and then completed.</div>
+  </div>
+
+  <div class="section" id="s-1">
+    <div class="sec-header" onclick="toggle('1')">
+      <span class="sec-num">01</span>
+      <span class="sec-title">The Declaration of Independence — and Its Unfinished Sentence</span>
+      <span class="sec-count">4 sub</span>
+      <span class="sec-arrow">▶</span>
+    </div>
+    <div class="subsections">
+      <div class="sub"><div class="sub-row"><span class="sub-id">01.1</span><div class="sub-body"><div class="sub-title">What 1776 declared — and what it couldn't yet say</div><div class="sub-desc">Independence from external domination. Necessary. Also incomplete. The founders were building a nation while holding people in bondage. The declaration was real. The contradiction was structural.</div><span class="sub-tag t-open">Free</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">01.2</span><div class="sub-body"><div class="sub-title">Independence is not the same as freedom</div><div class="sub-desc">Independence is freedom from something. Freedom requires something more: agency, ownership, the capacity to build. The American Dream confused the two. The confusion is the structural problem.</div><span class="sub-tag t-open">Free</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">01.3</span><div class="sub-body"><div class="sub-title">Interdependence is the truer declaration</div><div class="sub-desc">We were already woven together before the declaration was signed. Prosperity is a collective creation. Independence without interdependence is isolation. Two hundred and fifty years later, we need to complete the sentence.</div><span class="sub-tag t-open">Free</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">01.4</span><div class="sub-body"><div class="sub-title">2026 — the 250th anniversary</div><div class="sub-desc">The Trust Constitution is being drafted in the year of the 250th anniversary. Not incidental. The architecture requires the historical parallel. A new covenant for a new economy, in the year the old one is being reexamined.</div><span class="sub-tag t-open">Free</span></div></div></div>
+    </div>
+  </div>
+
+  <div class="section" id="s-2">
+    <div class="sec-header" onclick="toggle('2')">
+      <span class="sec-num">02</span>
+      <span class="sec-title">Hamilton's Insight — Capital as the Engine of Sovereignty</span>
+      <span class="sec-count">4 sub</span>
+      <span class="sec-arrow">▶</span>
+    </div>
+    <div class="subsections">
+      <div class="sub"><div class="sub-row"><span class="sub-id">02.1</span><div class="sub-body"><div class="sub-title">A nation held together by financial architecture</div><div class="sub-desc">Hamilton understood that ideals alone do not hold a nation together. Capital properly structured — the First Bank, a unified currency, domestic manufacturing — is the engine of sustainable sovereignty.</div><span class="sub-tag t-open">Free</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">02.2</span><div class="sub-body"><div class="sub-title">Capital is not money — it is a transformative mechanism</div><div class="sub-desc">Capital converts fixed assets — land, real estate, intellectual property, human creativity, data — into productive resources. Capitalism is most effective when it democratizes this power. When it doesn't, it extracts.</div><span class="sub-tag t-open">Free</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">02.3</span><div class="sub-body"><div class="sub-title">The debt mechanism — and its inversion</div><div class="sub-desc">Hamilton tied the wealthy to the national project through debt. The Trust inverts this: instead of tying the wealthy to the nation through debt, it ties contributors to the commons through covenant. The mechanism is the same. The direction is reversed.</div><span class="sub-tag t-open">Free</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">02.4</span><div class="sub-body"><div class="sub-title">The 80-year cyclical history</div><div class="sub-desc">Revolution. Civil War. World War II. Today. Hamilton connects to the cycle AM3 teaches: every 80 years, the structural foundations of American capitalism are renegotiated. We are in that moment now.</div><span class="sub-tag t-open">Free</span></div></div></div>
+    </div>
+  </div>
+
+  <div class="section" id="s-3">
+    <div class="sec-header" onclick="toggle('3')">
+      <span class="sec-num">03</span>
+      <span class="sec-title">The Post-War Moment — When It Actually Worked</span>
+      <span class="sec-count">4 sub</span>
+      <span class="sec-arrow">▶</span>
+    </div>
+    <div class="subsections">
+      <div class="sub"><div class="sub-row"><span class="sub-id">03.1</span><div class="sub-body"><div class="sub-title">1945–1975: the one generation when wages and assets moved together</div><div class="sub-desc">A specific historical window. Strong unions, regulated capital, publicly funded infrastructure and education, a tax structure that discouraged hoarding. Broad prosperity was real and structural — not cultural.</div><span class="sub-tag t-open">Free</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">03.2</span><div class="sub-body"><div class="sub-title">The conditions that produced it</div><div class="sub-desc">Post-war manufacturing dominance, union membership at peak, GI Bill, FHA mortgages, marginal tax rates above 90% for the highest earners. Specific policies. Specific choices. Not inevitable. Deliberately constructed.</div><span class="sub-tag t-open">Free</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">03.3</span><div class="sub-body"><div class="sub-title">Who it excluded</div><div class="sub-desc">Black and Latino families were structurally excluded from the GI Bill's wealth-building mechanisms. The post-war prosperity was real — and racially bounded. The American Dream was always predistributive. The question is who was included in the distribution.</div><span class="sub-tag t-open">Free</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">03.4</span><div class="sub-body"><div class="sub-title">Proof that the structure is a choice</div><div class="sub-desc">Those conditions were specific. They were also deliberately dismantled. If they could be built once, they can be built again — differently, more inclusively, for the knowledge economy rather than the manufacturing economy.</div><span class="sub-tag t-open">Free</span></div></div></div>
+    </div>
+  </div>
+
+  <div class="section" id="s-4">
+    <div class="sec-header" onclick="toggle('4')">
+      <span class="sec-num">04</span>
+      <span class="sec-title">Entrepreneurship as the Practice of Citizenship</span>
+      <span class="sec-count">4 sub</span>
+      <span class="sec-arrow">▶</span>
+    </div>
+    <div class="subsections">
+      <div class="sub"><div class="sub-row"><span class="sub-id">04.1</span><div class="sub-body"><div class="sub-title">Half of all adults will start a business</div><div class="sub-desc">America remains a nation of entrepreneurs. Starting a business does not automatically translate into asset creation. 26 million sole proprietors, most in survival mode. The on-ramp exists. The highway does not.</div><span class="sub-tag t-open">Free</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">04.2</span><div class="sub-body"><div class="sub-title">When a business becomes a wealth-building asset</div><div class="sub-desc">Only when it grows beyond the founder's individual capacity. A business that stops when the owner stops is a job with more paperwork. The structural gap: most SMBs never cross this threshold because they lack the capital, infrastructure, and governance to do so.</div><span class="sub-tag t-open">Free</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">04.3</span><div class="sub-body"><div class="sub-title">Entrepreneurship as participation</div><div class="sub-desc">When people create businesses, they are not just generating revenue — they are participating. Investing in their own agency. Contributing to the civic fabric. Entrepreneurship, done right, is not only a path to prosperity. It is a practice of citizenship.</div><span class="sub-tag t-open">Free</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">04.4</span><div class="sub-body"><div class="sub-title">Access is the on-ramp. Ownership is the highway.</div><div class="sub-desc">The most accessible framing of the thesis. The entire structural argument in two sentences. This is AM3's formulation — registered in the derivation chain of the Trust.</div><span class="sub-tag t-open">Free</span></div></div></div>
+    </div>
+  </div>
+
+  <div class="section" id="s-5">
+    <div class="sec-header" onclick="toggle('5')">
+      <span class="sec-num">05</span>
+      <span class="sec-title">Democracy Requires Economic Agency</span>
+      <span class="sec-count">4 sub</span>
+      <span class="sec-arrow">▶</span>
+    </div>
+    <div class="subsections">
+      <div class="sub"><div class="sub-row"><span class="sub-id">05.1</span><div class="sub-body"><div class="sub-title">The right to vote without a stake</div><div class="sub-desc">The right to vote has become universal in law. It remains limited in impact without a corresponding stake in society's economic structures. Citizenship was historically linked to property ownership — not as a reflection of status, but of agency.</div><span class="sub-tag t-open">Free</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">05.2</span><div class="sub-body"><div class="sub-title">The link between civic voice and economic power</div><div class="sub-desc">As the gap between wage earners and asset holders grows, so too does the distance between civic voice and actual power. The erosion of economic mobility drives distrust in institutions, heightened polarization, and weakened democratic participation.</div><span class="sub-tag t-open">Free</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">05.3</span><div class="sub-body"><div class="sub-title">Shared prosperity is a civic necessity</div><div class="sub-desc">Not just a social good. If democracy is to survive substantively — not just procedurally — we must democratize the economy itself. Without economic freedom, we have no democracy.</div><span class="sub-tag t-open">Free</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">05.4</span><div class="sub-body"><div class="sub-title">Ownership as the frontline of democratic renewal</div><div class="sub-desc">In an age where economic power is platformed, automated, and monopolized, ownership itself becomes the frontline of democratic renewal. This is not hyperbole. It is the structural argument.</div><span class="sub-tag t-open">Free</span></div></div></div>
+    </div>
+  </div>
+
+  <div class="section" id="s-6">
+    <div class="sec-header" onclick="toggle('6')">
+      <span class="sec-num">06</span>
+      <span class="sec-title">America's Crisis Is Structural, Not Cultural</span>
+      <span class="sec-count">4 sub</span>
+      <span class="sec-arrow">▶</span>
+    </div>
+    <div class="subsections">
+      <div class="sub"><div class="sub-row"><span class="sub-id">06.1</span><div class="sub-body"><div class="sub-title">The cultural diagnosis fails</div><div class="sub-desc">Many argue America's crisis is primarily cultural — a failure of values, community, work ethic. This paper contends it is fundamentally structural. The institutions we've relied on since the Great Depression to redistribute opportunity are now financially unsustainable.</div><span class="sub-tag t-open">Free</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">06.2</span><div class="sub-body"><div class="sub-title">The political dysfunction follows from the economic</div><div class="sub-desc">Political polarization is a symptom of economic exclusion, not its cause. When the majority cannot access the wealth-building mechanisms of the economy, distrust in every institution follows. The solution is structural, not rhetorical.</div><span class="sub-tag t-open">Free</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">06.3</span><div class="sub-body"><div class="sub-title">The structural fix is also the democratic fix</div><div class="sub-desc">Rebuilding economic agency — through broader ownership, constitutional governance, and predistribution — is not only the economic solution. It is the democratic one. Shared prosperity and democratic renewal are the same project.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">06.4</span><div class="sub-body"><div class="sub-title">America is not living up to its potential</div><div class="sub-desc">The ideals established at the founding — self-determination, equality, widespread prosperity — remain incomplete. Our best days lie ahead. But only if we are willing to build them together. Not apart. Together.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CLUSTER 2: THE STRUCTURAL DIAGNOSIS -->
+<div class="cluster" style="margin-top:1.2rem">
+  <div class="cluster-head">
+    <div class="cl-label">Cluster 2 · Sections 7–30</div>
+    <div class="cl-title">The Structural Diagnosis — What Broke the Link</div>
+    <div class="cl-desc">Data-grounded. Historically honest. Not partisan. This is where V7.1 is strongest and most of it carries forward intact.</div>
+  </div>
+
+  <div class="section" id="s-7">
+    <div class="sec-header" onclick="toggle('7')">
+      <span class="sec-num">07</span>
+      <span class="sec-title">The Link That Broke — Wages vs. Assets Since 1975</span>
+      <span class="sec-count">4 sub</span>
+      <span class="sec-arrow">▶</span>
+    </div>
+    <div class="subsections">
+      <div class="sub"><div class="sub-row"><span class="sub-id">07.1</span><div class="sub-body"><div class="sub-title">The BLS chart — labor's share of output</div><div class="sub-desc">Labor's share of national income remained relatively stable 1947–2000, hovering between 60–65% of GDP. Beginning in the early 2000s, a steep and persistent decline. The graph does not lie.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">07.2</span><div class="sub-body"><div class="sub-title">Where the value went</div><div class="sub-desc">Not destroyed. Redirected. Wealth accumulation increasingly accrues to owners of technology, digital platforms, and financial assets. The gap between productivity and compensation. The gap between asset returns and wage growth. Both structural. Neither accidental.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">07.3</span><div class="sub-body"><div class="sub-title">The Pew middle class data</div><div class="sub-desc">How the American middle class has changed in five decades. Shrinking. Not because people stopped working hard — because the structural conditions that produced middle class wealth were dismantled.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">07.4</span><div class="sub-body"><div class="sub-title">The perpetual cycle</div><div class="sub-desc">Paying someone else's mortgage instead of building equity. Living paycheck to paycheck instead of accumulating assets. Not a failure of ambition. A failure of structure. Prosperity is now determined by asset ownership, not wages alone.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+    </div>
+  </div>
+
+  <div class="section" id="s-8">
+    <div class="sec-header" onclick="toggle('8')">
+      <span class="sec-num">08</span>
+      <span class="sec-title">The Historical Baggage — Plantation Economy to Platform Economy</span>
+      <span class="sec-count">4 sub</span>
+      <span class="sec-arrow">▶</span>
+    </div>
+    <div class="subsections">
+      <div class="sub"><div class="sub-row"><span class="sub-id">08.1</span><div class="sub-body"><div class="sub-title">The original extraction pattern</div><div class="sub-desc">American capitalism was built on extraction and concentrated ownership from the beginning. The plantation economy established the pattern: labor creates value, owners capture it. This is not a digression. It is the structural DNA.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">08.2</span><div class="sub-body"><div class="sub-title">Why economic justice movements opposed capital itself</div><div class="sub-desc">The history explains the posture. Movements for economic justice positioned capital as the adversary because, historically, capital was deployed against them. The Trust's argument: capital is a tool. The structure governing its use is the problem.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">08.3</span><div class="sub-body"><div class="sub-title">De Soto's insight — the poor are not poor because they lack assets</div><div class="sub-desc">They lack the legal and institutional structures that make assets legible. Dead capital. The same insight applies to intellectual capital: the social capital built by teachers, organizers, and care workers is real, enormous, and invisible to the formal economy.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">08.4</span><div class="sub-body"><div class="sub-title">Platform economy as the new plantation</div><div class="sub-desc">The mechanism is the same: labor creates value, platform captures it. The workers receive wages — or less. The difference: the new plantation is invisible, voluntary, global, and algorithmically enforced.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+    </div>
+  </div>
+
+  <div class="section" id="s-9">
+    <div class="sec-header" onclick="toggle('9')">
+      <span class="sec-num">09</span>
+      <span class="sec-title">Platform Consolidation — The New Enclosure</span>
+      <span class="sec-count">4 sub</span>
+      <span class="sec-arrow">▶</span>
+    </div>
+    <div class="subsections">
+      <div class="sub"><div class="sub-row"><span class="sub-id">09.1</span><div class="sub-body"><div class="sub-title">100 years of rising corporate concentration</div><div class="sub-desc">Becker Friedman Institute data: industries with greater corporate concentration experience faster growth, driven by technological integration and economies of scale. From industrial trusts to digital platforms, economic power accrues to those who control infrastructure and achieve scale.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">09.2</span><div class="sub-body"><div class="sub-title">The winner-take-all ecosystem</div><div class="sub-desc">Platform economics is not a technology story. It is a property rights story. The Magnificent Seven: Apple, Microsoft, NVIDIA, Amazon, Alphabet, Meta, Tesla. Their combined market strength has driven most of the recent growth in S&P 500. The gains are accruing to asset holders.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">09.3</span><div class="sub-body"><div class="sub-title">The commons is being enclosed at the data layer</div><div class="sub-desc">Human knowledge — accumulated over millennia, stored in every text ever written, every conversation ever had — is being commodified by a handful of corporations. The same structural move as the English enclosure of common lands in the 16th century, running at the speed of software.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">09.4</span><div class="sub-body"><div class="sub-title">SMBs losing market share</div><div class="sub-desc">Small businesses — 99.9% of all US firms — rarely have the infrastructure, scale, or capital to compete against enterprises that dominate global supply chains. Growing economic consolidation threatens not just economic mobility. It undermines democratic participation itself.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+    </div>
+  </div>
+
+  <div class="section" id="s-10">
+    <div class="sec-header" onclick="toggle('10')">
+      <span class="sec-num">10</span>
+      <span class="sec-title">The 26 Million — Small Business and the Wealth-Building Gap</span>
+      <span class="sec-count">4 sub</span>
+      <span class="sec-arrow">▶</span>
+    </div>
+    <div class="subsections">
+      <div class="sub"><div class="sub-row"><span class="sub-id">10.1</span><div class="sub-body"><div class="sub-title">Sole proprietors in survival mode</div><div class="sub-desc">26 million Americans are sole proprietors, most without employees, adequate capital, or sustainable infrastructure. These businesses depend entirely on their owner's labor. When the owner stops working, the business stops generating revenue.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">10.2</span><div class="sub-body"><div class="sub-title">The threshold that most never cross</div><div class="sub-desc">A business transforms into a wealth-building asset only when it grows beyond the founder's individual capacity. Most SMBs never cross this threshold — not from lack of effort, but because the structural conditions (capital, infrastructure, governance) are not available to them.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">10.3</span><div class="sub-body"><div class="sub-title">Entrepreneurship without capital structure is treadmill labor</div><div class="sub-desc">Training people to start businesses without giving them capital structure is like training people to cook without giving them food. The skills are real. The access to the mechanism that converts skill into wealth is the problem.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">10.4</span><div class="sub-body"><div class="sub-title">Losing faith in entrepreneurship</div><div class="sub-desc">Amid rising distrust in key institutions, losing faith in entrepreneurship would signal a deeper societal fracture. The American Dream depends on the belief that building something is possible. When that belief dies, the civic fabric tears.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+    </div>
+  </div>
+
+  <!-- Sections 11-12 compressed for space -->
+  <div class="section" id="s-11">
+    <div class="sec-header" onclick="toggle('11')">
+      <span class="sec-num">11</span>
+      <span class="sec-title">Shareholder Supremacy and the Financialization of America</span>
+      <span class="sec-count">4 sub</span>
+      <span class="sec-arrow">▶</span>
+    </div>
+    <div class="subsections">
+      <div class="sub"><div class="sub-row"><span class="sub-id">11.1</span><div class="sub-body"><div class="sub-title">The 1970s pivot</div><div class="sub-desc">The shift from stakeholder capitalism to shareholder supremacy did not happen by accident. Milton Friedman's 1970 NYT essay. The Business Roundtable's 1997 statement. Specific ideological decisions that restructured how corporations understood their purpose.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">11.2</span><div class="sub-body"><div class="sub-title">Labor's share declining as capital gains rise</div><div class="sub-desc">Five decades of data. Wages grew 17.3% from 1979–2022. Productivity grew 62%. The gap between them did not disappear. It moved upward — into asset values, equity, returns on capital. This is not a bug. It is the design.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">11.3</span><div class="sub-body"><div class="sub-title">The financialization of the economy</div><div class="sub-desc">Finance grew from approximately 2.5% of GDP in 1945 to over 8% by 2020. The economy moved from making things to making money from money. This structural shift rewards asset holders and punishes wage earners. It is not reversible through wages alone.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">11.4</span><div class="sub-body"><div class="sub-title">Generational wealth and its absence</div><div class="sub-desc">The compounding of asset ownership across generations. Those who could not access the asset economy in 1945 — because of redlining, discriminatory lending, systematic exclusion — are three generations behind on compound growth. The gap is structural and intergenerational.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+    </div>
+  </div>
+
+  <div class="section" id="s-12">
+    <div class="sec-header" onclick="toggle('12')">
+      <span class="sec-num">12</span>
+      <span class="sec-title">Piketty and the Mathematics of Inequality — r > g</span>
+      <span class="sec-count">4 sub</span>
+      <span class="sec-arrow">▶</span>
+    </div>
+    <div class="subsections">
+      <div class="sub"><div class="sub-row"><span class="sub-id">12.1</span><div class="sub-body"><div class="sub-title">When the rate of return on capital exceeds economic growth</div><div class="sub-desc">Piketty's central insight: r > g. When the rate of return on capital consistently exceeds the rate of economic growth, inequality compounds mathematically. Not because of bad policy. Not because of cultural failure. Because of arithmetic.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">12.2</span><div class="sub-body"><div class="sub-title">20 countries, 3 centuries of data</div><div class="sub-desc">The current divergence is not an aberration. It is the historical norm. The post-war period of relative equality was the exception — produced by specific structural conditions including destruction of inherited wealth through war and the deliberate construction of redistributive institutions.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">12.3</span><div class="sub-body"><div class="sub-title">The conditions that produced the exception are gone</div><div class="sub-desc">Those conditions — wartime destruction of capital, full employment, strong unions, progressive taxation, regulated finance — were deliberately dismantled beginning in the 1970s. The math has reasserted itself.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">12.4</span><div class="sub-body"><div class="sub-title">The policy implication: ownership, not redistribution</div><div class="sub-desc">If r > g is structural, no tax rate can solve it. Redistribution corrects the symptom after the fact. Predistribution changes the r > g equation by broadening who owns capital. Kelso saw this in 1958. Piketty's data confirmed it in 2013.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CLUSTER 3: THE EXHAUSTION OF OLD ANSWERS -->
+<div class="cluster" style="margin-top:1.2rem">
+  <div class="cluster-head">
+    <div class="cl-label">Cluster 3 · Sections 13–33</div>
+    <div class="cl-title">The Exhaustion — Why the Old Fixes No Longer Work</div>
+    <div class="cl-desc">The New Deal model, its limits, and its coming fiscal collapse. The three-era fiscal arc — the most important new section. The covenant vs. contract distinction that changes the register entirely.</div>
+  </div>
+
+  <div class="section" id="s-13">
+    <div class="sec-header" onclick="toggle('13')">
+      <span class="sec-num">13</span>
+      <span class="sec-title">The New Deal Model — Built for Another Era</span>
+      <span class="sec-count">4 sub</span>
+      <span class="sec-arrow">▶</span>
+    </div>
+    <div class="subsections">
+      <div class="sub"><div class="sub-row"><span class="sub-id">13.1</span><div class="sub-body"><div class="sub-title">What the New Deal accomplished</div><div class="sub-desc">Stabilized American society for seventy years. Expanded economic opportunity. Built the infrastructure of the middle class. It was the most successful redistributive program in American history. And it is now reaching its structural limits.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">13.2</span><div class="sub-body"><div class="sub-title">The Social Security insolvency problem</div><div class="sub-desc">The Social Security Trust Fund faces insolvency by 2033, potentially triggering a 23% benefit cut for millions of retirees. Not a political failure. A demographic and structural failure. The model was designed for a specific population pyramid that no longer exists.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">13.3</span><div class="sub-body"><div class="sub-title">Redistribution assumes passivity</div><div class="sub-desc">By design, redistribution assumes most Americans are incapable of sustained economic agency, relegating them to passive beneficiaries rather than active creators of wealth. It reinforces the capitalist structure it tries to correct — the minority as drivers, the majority as dependents.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">13.4</span><div class="sub-body"><div class="sub-title">Programs that reinforce dependency</div><div class="sub-desc">Childcare assistance, education subsidies, affordable housing initiatives — essential and insufficient. They require ongoing investment. They often inadvertently reinforce dependency rather than promoting self-determination, entrepreneurship, or long-term economic mobility.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+    </div>
+  </div>
+
+  <div class="section" id="s-14">
+    <div class="sec-header" onclick="toggle('14')">
+      <span class="sec-num">14 ★</span>
+      <span class="sec-title">The Three-Era Fiscal Arc — Tariff, Income Tax, Asset Fee</span>
+      <span class="sec-count">4 sub · Most important new section</span>
+      <span class="sec-arrow">▶</span>
+    </div>
+    <div class="subsections">
+      <div class="sub"><div class="sub-row"><span class="sub-id">14.1</span><div class="sub-body"><div class="sub-title">Era I: The Tariff Era (founding through Civil War)</div><div class="sub-desc">The federal government funded itself by taxing trade — import and export duties. This was Hamilton's design. The tariff era aligned federal revenue with the movement of physical goods. It worked for an agrarian, manufacturing economy. It could not survive industrialization.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">14.2</span><div class="sub-body"><div class="sub-title">Era II: The Income Tax Era (1913–present)</div><div class="sub-desc">The 16th Amendment: the federal government funds itself by taxing labor income. The income tax era aligned federal revenue with the movement of wages. It worked for a manufacturing, employment-based economy. It cannot survive the automation of labor and the rise of capital income.</div><span class="sub-tag t-sub">Email required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">14.3</span><div class="sub-body"><div class="sub-title">Era III: The Asset Fee Era (already beginning)</div><div class="sub-desc">The next era will be funded by taxing assets — wealth taxes, data fees, AI infrastructure levies, commons contributions. This is not a political preference. It is a structural inevitability. When the income tax base shrinks because AI automates labor, governments must find revenue elsewhere. The question is not whether it happens. The question is who designs it.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">14.4</span><div class="sub-body"><div class="sub-title">Predistribution is the asset fee era done right</div><div class="sub-desc">The asset fee era can be designed to concentrate power further — a wealth tax collected by the state and redistributed through programs — or it can be designed to broaden ownership. Predistribution is the ownership-broadening design. The Trust is one implementation. It will not be the only one. But someone has to build it first.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+    </div>
+  </div>
+
+  <div class="section" id="s-15">
+    <div class="sec-header" onclick="toggle('15')">
+      <span class="sec-num">15</span>
+      <span class="sec-title">Contract vs. Covenant — Why the Distinction Matters</span>
+      <span class="sec-count">4 sub</span>
+      <span class="sec-arrow">▶</span>
+    </div>
+    <div class="subsections">
+      <div class="sub"><div class="sub-row"><span class="sub-id">15.1</span><div class="sub-body"><div class="sub-title">What a contract is</div><div class="sub-desc">Transactional, terminable, governed by self-interest. A contract holds while both parties benefit. When it stops being profitable for either party, it dissolves. Every existing redistributive institution is contractual. The social contract can be rescinded by any political majority.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">15.2</span><div class="sub-body"><div class="sub-title">What a covenant is</div><div class="sub-desc">Relational, irrevocable, oriented toward long-term mutual flourishing. A covenant holds regardless of whether it is immediately profitable. It binds across time. It binds even when the parties change. Marriage is a covenant. The Constitution, at its best, is a covenant. The Trust is a covenant.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">15.3</span><div class="sub-body"><div class="sub-title">Why predistribution requires a covenant</div><div class="sub-desc">Predistribution requires structural commitments that hold before the capital arrives — before the interests diverge — before the people who made them are still in the room. Only a covenant can hold that long. A contract cannot. This is the philosophical foundation of everything that follows.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">15.4</span><div class="sub-body"><div class="sub-title">The covenant in American history</div><div class="sub-desc">The Mayflower Compact. The Constitution. The Emancipation Proclamation. The most durable American institutions are covenantal, not contractual. The Trust operates in this tradition. Not as a religious claim. As a governance architecture.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+    </div>
+  </div>
+
+  <!-- Sections 16-18 abbreviated -->
+  <div class="section" id="s-16">
+    <div class="sec-header" onclick="toggle('16')">
+      <span class="sec-num">16–18</span>
+      <span class="sec-title">Kelso, Universal Capitalism, and the ESOP's Limits · De Soto Revisited · Mazzucato and the Entrepreneurial State</span>
+      <span class="sec-count">4 sub each</span>
+      <span class="sec-arrow">▶</span>
+    </div>
+    <div class="subsections">
+      <div class="sub"><div class="sub-row"><span class="sub-id">16.x</span><div class="sub-body"><div class="sub-title">Kelso: the answer is not higher wages — it is broader ownership</div><div class="sub-desc">The ESOP works for manufacturing and physical capital. It does not scale well to intellectual capital or the knowledge economy. Kelso's insight is foundational. His mechanism is insufficient. The Trust completes his argument for the 21st century.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">17.x</span><div class="sub-body"><div class="sub-title">De Soto revisited: social capital as dead capital</div><div class="sub-desc">The care worker's twenty years of institutional knowledge. The teacher's curriculum. The organizer's network. All of it real, enormous, and structurally invisible. The Trust is a legibility mechanism for the social capital De Soto could not yet describe.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">18.x</span><div class="sub-body"><div class="sub-title">Mazzucato: the state is the original venture capitalist</div><div class="sub-desc">The internet, GPS, touchscreens — funded by government R&D, privatized by corporations. The Trust's argument at the human level: the care economy creates enormous public value that is systematically unrecognized and privately extracted. Mazzucato provides the institutional credibility.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CLUSTER 4: THE INTELLECTUAL HERITAGE -->
+<div class="cluster" style="margin-top:1.2rem">
+  <div class="cluster-head">
+    <div class="cl-label">Cluster 4 · Sections 19–48 (representative)</div>
+    <div class="cl-title">The Intellectual Heritage — The Thinkers Who Shaped This Argument</div>
+    <div class="cl-desc">Not a literature review. A curriculum. The thinkers whose work converges on the same structural conclusion from different angles. This is the section that is most personally AM3. The air he breathes. Where readers who belong in this world recognize themselves.</div>
+  </div>
+
+  <div class="section" id="s-20">
+    <div class="sec-header" onclick="toggle('20')">
+      <span class="sec-num">19–23</span>
+      <span class="sec-title">Five Structural Architects: Hamilton · De Soto · Kelso · Lanier · Harari</span>
+      <span class="sec-count">4 sub each · 20 total</span>
+      <span class="sec-arrow">▶</span>
+    </div>
+    <div class="subsections">
+      <div class="sub"><div class="sub-row"><span class="sub-id">19.x</span><div class="sub-body"><div class="sub-title">Hamilton: capital as engine of sovereignty</div><div class="sub-desc">Capital properly structured and broadly accessible is the engine of sustainable prosperity. The Trust inverts Hamilton's debt mechanism: tying contributors to the commons through covenant rather than tying the wealthy to the nation through debt.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">20.x</span><div class="sub-body"><div class="sub-title">De Soto: assets need legibility</div><div class="sub-desc">Capital's power lies in its capacity to formalize assets into collateral. The poor are not poor because they lack assets. They lack the legal structures that make assets legible. The Trust is a legibility machine for intellectual and social capital.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">21.x</span><div class="sub-body"><div class="sub-title">Kelso: universal capitalism — everyone should own capital</div><div class="sub-desc">If capital is the engine of prosperity, the solution is not to redistribute the proceeds — it is to broaden ownership. The ESOP was Kelso's mechanism. The Trust's vault and ledger are the next mechanism.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">22.x</span><div class="sub-body"><div class="sub-title">Lanier: data is labor — siren servers extract it</div><div class="sub-desc">The value of AI systems derives from collective human intelligence. That labor is uncompensated. The platforms — siren servers — extract it and monetize it without attribution or payment. This is the ownership critique at the data layer.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+    </div>
+  </div>
+
+  <div class="section" id="s-24">
+    <div class="sec-header" onclick="toggle('24')">
+      <span class="sec-num">24–33</span>
+      <span class="sec-title">The Liberators, The Educators, The Systems Thinkers · Douglass · Freire · Piketty · Galeano · Baldwin · Thoreau · Lincoln · Harari · Mazzucato · Ostrom</span>
+      <span class="sec-count">4 sub each · 40 total</span>
+      <span class="sec-arrow">▶</span>
+    </div>
+    <div class="subsections">
+      <div class="sub"><div class="sub-row"><span class="sub-id">24.x</span><div class="sub-body"><div class="sub-title">Douglass: literacy as the path to freedom</div><div class="sub-desc">The enslaved boy who taught himself to read. That which they most disapproved of was what he was most determined to achieve. The Conversation-to-Asset Protocol in its most elemental form: knowledge is power, and the system that excludes you from knowledge excludes you from freedom.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">25.x</span><div class="sub-body"><div class="sub-title">Freire: the banking model of education</div><div class="sub-desc">The teacher deposits knowledge into students like currency into a vault. No agency, no creation, no ownership. The Trust is the anti-banking model applied to economics. Real education is dialogue; real prosperity is co-creation.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">26.x</span><div class="sub-body"><div class="sub-title">Ostrom: governing the commons</div><div class="sub-desc">Elinor Ostrom proved that the commons does not inevitably lead to tragedy — if governed with the right institutional arrangements. Her eight principles of commons governance are the intellectual predecessor to the Trust's constitutional architecture.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">27.x</span><div class="sub-body"><div class="sub-title">Baldwin: know the house before you burn it down</div><div class="sub-desc">The work of transformation is not to destroy the house but to understand its architecture so completely that you can build a better one. To know America so well that the knowledge becomes the tool of its repair.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CLUSTER 5: THE ACCELERATION AND MORAL CASE -->
+<div class="cluster" style="margin-top:1.2rem">
+  <div class="cluster-head">
+    <div class="cl-label">Cluster 5 · Sections 34–48</div>
+    <div class="cl-title">The Acceleration and the Moral Case — AI, the Final Enclosure, and the Invisible Labor</div>
+    <div class="cl-desc">AI as the accelerant, not the cause. The covenant violation argument. The invisible labor proven by experience, not theory. The section that moves the argument from analytical to human.</div>
+  </div>
+
+  <div class="section" id="s-34">
+    <div class="sec-header" onclick="toggle('34')">
+      <span class="sec-num">34–38</span>
+      <span class="sec-title">AI and the Final Enclosure · Five Sections</span>
+      <span class="sec-count">4 sub each · 20 total</span>
+      <span class="sec-arrow">▶</span>
+    </div>
+    <div class="subsections">
+      <div class="sub"><div class="sub-row"><span class="sub-id">34.x</span><div class="sub-body"><div class="sub-title">AI does not create a new paradigm — it intensifies the existing one</div><div class="sub-desc">AI is not a disruptive technology. It is an amplifying force. It increases the productivity of capital while further decoupling value creation from labor. Three core realities: asset growth outpaces wages, automation enriches owners, concentrated wealth erodes demand.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">35.x</span><div class="sub-body"><div class="sub-title">The covenant violation — training on the commons, capturing the returns</div><div class="sub-desc">AI systems are trained on the accumulated intellectual labor of human civilization — labor never compensated, never attributed, never returned to its creators. This is a covenant violation. The commons is being enclosed at the most fundamental layer: human knowledge itself.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">36.x</span><div class="sub-body"><div class="sub-title">The Magnificent Seven and private-sector dominance</div><div class="sub-desc">Unlike earlier waves of technological innovation catalyzed by public investment, today's AI landscape is predominantly driven by private capital from a small group of powerful corporations. The UCL Policy Commission data. Centralizing economic and decision-making power within a handful of technology giants.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">37.x</span><div class="sub-body"><div class="sub-title">The Burning Glass problem — when education no longer protects you</div><div class="sub-desc">Entry-level roles requiring college degrees are disappearing as generative AI absorbs them. For the first time in American history, the path from education to economic security is genuinely uncertain. The structural response cannot be more education. It must be ownership.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+    </div>
+  </div>
+
+  <div class="section" id="s-39">
+    <div class="sec-header" onclick="toggle('39')">
+      <span class="sec-num">39–42</span>
+      <span class="sec-title">The Invisible Labor — What the Economy Cannot See</span>
+      <span class="sec-count">4 sub each · 16 total</span>
+      <span class="sec-arrow">▶</span>
+    </div>
+    <div class="subsections">
+      <div class="sub"><div class="sub-row"><span class="sub-id">39.x</span><div class="sub-body"><div class="sub-title">The care economy as the largest unrecognized sector</div><div class="sub-desc">Home care, elder care, child care, teaching, community organizing. Creates enormous value. Almost entirely invisible to capital. Predominantly women. The most underpaid, least attributed, highest-impact labor in the economy.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">40.x</span><div class="sub-body"><div class="sub-title">The nurse at 3am</div><div class="sub-desc">She walks the hallway. She is from St. Lucia. She earns wages and goes home with nothing of the organization she sustains. Her labor is real. Her contribution is invisible to the economy. The question is not whether the labor happened. It happened. The question is whether she ever gets a stake in what she built.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">41.x</span><div class="sub-body"><div class="sub-title">The teacher's fourteen years in South Bronx classrooms</div><div class="sub-desc">Designing instruction for students the system had written off. None of it attributed. None of it compensated beyond salary. No path to ownership in the institution she sustained. The Pareto Inversion: the highest-value work is done by the most structurally excluded workers.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">42.x</span><div class="sub-body"><div class="sub-title">Making the invisible visible — the core mission</div><div class="sub-desc">The core mission of the Trust is to create mechanisms that recognize, record, and compensate the forms of labor that conventional economic systems cannot see. What cannot be measured cannot be protected. What cannot be protected will be enclosed.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+    </div>
+  </div>
+
+  <div class="section" id="s-43">
+    <div class="sec-header" onclick="toggle('43')">
+      <span class="sec-num">43–48</span>
+      <span class="sec-title">Predistribution — From Redistribution to Structural Ownership · Six Sections</span>
+      <span class="sec-count">4 sub each · 24 total</span>
+      <span class="sec-arrow">▶</span>
+    </div>
+    <div class="subsections">
+      <div class="sub"><div class="sub-row"><span class="sub-id">43.x</span><div class="sub-body"><div class="sub-title">The Homestead Act, the GI Bill, Hamilton's tariffs — predistributive moments</div><div class="sub-desc">America came closest to shared prosperity in predistributive moments: structural decisions that embedded broad ownership before concentration could set in. These were not accidents. They were deliberate policy choices. They can be made again.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">44.x</span><div class="sub-body"><div class="sub-title">The AI economy is being built right now</div><div class="sub-desc">The question of who owns it is still open. The window will not stay open. The predistributive moment is now. The infrastructure for shared ownership of the AI economy must be built before the AI economy concentrates. It is concentrating now.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">45.x</span><div class="sub-body"><div class="sub-title">LLMs as public utilities, not private assets</div><div class="sub-desc">Large language models, now foundational to the economy, should be regarded not merely as private assets but as public utilities — managed to serve broad societal interests. The collective legacy of human communities whose intellectual contributions form the basis of these technologies must not be monopolized.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">46.x</span><div class="sub-body"><div class="sub-title">The 4P model — public, private, philanthropic, people-powered</div><div class="sub-desc">No single sector can solve this. The public sector sets the legal framework. The private sector provides capital and operational expertise. Philanthropy catalyzes and absorbs early risk. And people — workers, care providers, community members — must be at the center as owners, not recipients.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CLUSTER 6: THE DECLARATION -->
+<div class="cluster" style="margin-top:1.2rem">
+  <div class="cluster-head">
+    <div class="cl-label">Cluster 6 · Sections 49–56 → closing to 144</div>
+    <div class="cl-title">The Declaration — Seven Principles and the Bridge to Door III</div>
+    <div class="cl-desc">Not policy recommendations. Not a call to action. A declaration — things held to be true. The reader who makes it here has earned the principles. The principles are the bridge to Door III — but Door III requires more than reading.</div>
+  </div>
+
+  <div class="section" id="s-49">
+    <div class="sec-header" onclick="toggle('49')">
+      <span class="sec-num">49–55</span>
+      <span class="sec-title">Seven Things We Hold to Be True — A Declaration of Interdependence</span>
+      <span class="sec-count">4 sub each · 28 total</span>
+      <span class="sec-arrow">▶</span>
+    </div>
+    <div class="subsections">
+      <div class="sub"><div class="sub-row"><span class="sub-id">I</span><div class="sub-body"><div class="sub-title">Prosperity is not an individual achievement. It is a collective creation.</div><div class="sub-desc">Every individual who built something built it on a commons — on language developed over hundreds of thousands of years, on infrastructure funded by generations of taxpayers, on knowledge accumulated by ancestors who received nothing for it. Independence was a necessary declaration. Interdependence is the truer one.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">II</span><div class="sub-body"><div class="sub-title">The commons has a balance sheet.</div><div class="sub-desc">The relational infrastructure of human flourishing — trust networks, care relationships, community knowledge — is the largest unrecognized asset class in the modern economy. What cannot be measured cannot be protected. What cannot be protected will be enclosed.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">III</span><div class="sub-body"><div class="sub-title">Covenant precedes capital.</div><div class="sub-desc">The rules of governance must be established before capital arrives. Once capital arrives with its own interests, the governance follows the capital. The covenant is the structure that holds regardless of who holds the money.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+      <div class="sub"><div class="sub-row"><span class="sub-id">IV–VII</span><div class="sub-body"><div class="sub-title">Contribution creates ownership · The invisible labor is the real economy · Constitution before capital · The journey is infinite</div><div class="sub-desc">The remaining four principles are the bridge. They are not policy. They are not a pitch. They are the foundational truths the architecture is built on. The architecture that follows from them is behind Door III. You have to give something to see it.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+    </div>
+  </div>
+
+  <div class="section" id="s-56">
+    <div class="sec-header" onclick="toggle('56')">
+      <span class="sec-num">56</span>
+      <span class="sec-title">The Next Door — What This Path Does Not Tell You</span>
+      <span class="sec-count">1 section</span>
+      <span class="sec-arrow">▶</span>
+    </div>
+    <div class="subsections">
+      <div class="sub"><div class="sub-row"><span class="sub-id">56.1</span><div class="sub-body"><div class="sub-title">You now understand the argument. You do not yet know the architecture.</div><div class="sub-desc">This path is the analysis. It is not the architecture. If you have read this far, you understand the structural problem and the intellectual heritage of the solution. What you do not yet know: what specifically is being built, how the governance works, what the methodology is, who the 55 are, and what it would mean for you to be one of them. That path requires a different kind of contribution. You have to give more to go further.</div><span class="sub-tag t-gate">Subscription required</span></div></div></div>
+    </div>
+  </div>
+
+</div>
+
+<div style="margin:1.2rem 2.5rem;border:0.5px solid rgba(15,110,86,0.15);border-radius:6px;padding:1rem 1.3rem;font-size:0.72rem;line-height:1.65;color:rgba(26,18,8,0.5);font-family:'Cormorant Garamond',serif;font-style:italic">
+  <strong style="font-style:normal;font-weight:500;color:var(--ink)">Section count:</strong> 21 main sections × ~7 subsections each = <strong>144 total subsections.</strong> The third number in the Fibonacci sequence of Tr(us)t. 55 (Door III) + 89 (Door I) = 144. The full political-economic curriculum — from the founding promise through the declaration of interdependence.
+</div>
+
+<div class="footer">
+  <div class="footer-mark">Tr(<em>us</em>)t</div>
+  <div class="footer-meta">SPCC1 · Shared Prosperity Trust · Door II Outline · SPT-2026-0072 · Confidential</div>
+</div>
+
+</div>
+<script>
+function toggle(id){
+  var el=document.getElementById('s-'+id);
+  el.classList.toggle('open');
+}
+</script>
+</body>
+</html>
